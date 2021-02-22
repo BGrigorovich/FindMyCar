@@ -8,9 +8,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  redis:
-    image: redis
-
   api:
     build:
       context: .
@@ -23,24 +20,3 @@ services:
     depends_on:
       - db
 
-  celery:
-    build:
-      context: .
-      dockerfile: Dockerfile-api
-    command: celery -A vehicles worker -l info
-    volumes:
-      - .:/code
-    depends_on:
-      - db
-      - redis
-
-  celery-beat:
-    build:
-      context: .
-      dockerfile: Dockerfile-api
-    command: celery -A vehicles beat -l info
-    volumes:
-      - .:/code
-    depends_on:
-      - db
-      - redis
