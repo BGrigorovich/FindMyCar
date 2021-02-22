@@ -7,6 +7,10 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  redis:
+    image: redis
+
   api:
     build:
       context: .
@@ -18,5 +22,25 @@ services:
       - "8000:8000"
     depends_on:
       - db
-#    environment:
-#      - DJANGO_SETTINGS_MODULE=FindMyCar.settings
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile-api
+    command: celery -A vehicles worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile-api
+    command: celery -A vehicles beat -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis

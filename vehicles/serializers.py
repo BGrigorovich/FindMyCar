@@ -3,12 +3,13 @@ from rest_framework import serializers
 from .models import Vehicle
 
 
-def vin_validator(value):
-    if value % 2 != 0:
-        raise serializers.ValidationError('This field must be an even ')
-
-
-class VehicleSerializer(serializers.ModelSerializer):
+class VehicleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
-        fields = ('owners_name', 'number', 'colour', 'make', 'model', 'year')
+        fields = ('owners_name', 'number', 'colour', 'vin_code')
+
+
+class VehicleRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vehicle
+        fields = ('owners_name', 'number', 'colour', 'make', 'model', 'year', 'vin_code')

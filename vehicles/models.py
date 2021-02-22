@@ -39,7 +39,9 @@ class Vehicle(models.Model):
     # def save(self, force_insert=False, force_update=False, using=None,
     #          update_fields=None):
     #     vin_info = Vin(self.vin_code)
-    #
+    #     country = vin_info.country
+    #     year = vin_info.years[0] # todo: ask
+    #     model = vin_info
 
     class Meta:
         unique_together = ('owners_name', 'vin_code')
